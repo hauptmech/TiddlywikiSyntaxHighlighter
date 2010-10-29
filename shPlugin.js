@@ -227,6 +227,8 @@ dp.sh.Utils.FixForBlogger = function(str)
 // Common reusable regular expressions
 //
 dp.sh.RegexLib = {
+  MultiLineCysComments:new RegExp("_\\*[\\s\\S]*?\\*_","gm"),
+  SingleLineCysComments:new RegExp("_\\s.*$","gm"),
 	MultiLineCComments : new RegExp('/\\*[\\s\\S]*?\\*/', 'gm'),
 	SingleLineCComments : new RegExp('//.*$', 'gm'),
 	SingleLinePerlComments : new RegExp('#.*$', 'gm'),
@@ -301,11 +303,11 @@ dp.sh.Highlighter.prototype.AddBit = function(str, css)
 
 	var span = this.CreateElement('SPAN');
 	
-//	str = str.replace(/&/g, '&amp;');
-	str = str.replace(/ /g, '&nbsp;');
-	str = str.replace(/</g, '&lt;');
+	str = str.replace(/&/g, '&amp;');
+	str = str.replace(/ /g, '&nbsp;')
+  str = str.replace(/</g, '&lt;');
 //	str = str.replace(/&lt;/g, '<');
-//	str = str.replace(/>/g, '&gt;');
+	str = str.replace(/>/g, '&gt;');
 	str = str.replace(/\n/gm, '&nbsp;<br>');
 
 	// when adding a piece of code, check to see if it has line breaks in it 
@@ -1343,6 +1345,31 @@ dp.sh.Brushes.Cpp = function()
 dp.sh.Brushes.Cpp.prototype	= new dp.sh.Highlighter();
 dp.sh.Brushes.Cpp.Aliases	= ['cpp', 'c', 'c++'];
 
+dp.sh.Brushes.Cys = function () {
+    var datatypes = "int double void",
+        keywords = "break case catch class const __finally __exception __try " + 
+             "const_cast continue private public protected __declspec " + 
+             "default delete deprecated dllexport dllimport do dynamic_cast " + 
+             "else enum explicit extern if for friend goto inline " + 
+             "mutable naked namespace new noinline noreturn nothrow " + 
+             "register reinterpret_cast return selectany " + 
+             "sizeof static static_cast struct switch template this " + 
+             "thread throw true false try typedef typeid typename union " + 
+             "using uuid virtual volatile whcar_t while";
+    this.regexList = [
+    {regex: dp.sh.RegexLib.SingleLineCysComments,   css: "comment"    },
+    {regex: dp.sh.RegexLib.MultiLineCysComments,   css: "comment"    },
+    {regex: dp.sh.RegexLib.DoubleQuotedString,    css: "string"    },
+    {regex: new RegExp("[a-zA-Z]:|[a-zA-Z_][0-9a-zA-Z_]+:", "gm"),    css: "label"    },
+    {regex: new RegExp("[-`~!@#$%^*|+?=/\\\\]+", "gm"),   css: "operatur"    },
+    {regex: new RegExp(this.GetKeywords(datatypes), "gm"),   css: "datatypes"    },
+    {regex: new RegExp(this.GetKeywords(keywords), "gm"),    css: "keyword"    }];
+    this.CssClass = "dp-cys";
+    this.Style = ".dp-cys .datatypes { color: #2E8B57; font-weight: bold; }"
+};
+dp.sh.Brushes.Cys.prototype = new dp.sh.Highlighter();
+dp.sh.Brushes.Cys.Aliases = ["cys", "cystem"];
+
 dp.sh.Brushes.CSharp = function()
 {
 	var keywords =	'abstract as base bool break byte case catch char checked class const ' +
@@ -1992,48 +2019,5 @@ dp.sh.Brushes.Xml.prototype.ProcessRegexList = function()
 		push(this.matches, new dp.sh.Match(match[1], match.index + match[0].indexOf(match[1]), 'tag-name'));
 	}
 }
-dp.sh.Brushes.Cys = function () {
-    var _ = "int double void",
-        $ = "break case catch class const __finally __exception __try " + 
-             "const_cast continue private public protected __declspec " + 
-             "default delete deprecated dllexport dllimport do dynamic_cast " + 
-             "else enum explicit extern if for friend goto inline " + 
-             "mutable naked namespace new noinline noreturn nothrow " + 
-             "register reinterpret_cast return selectany " + 
-             "sizeof static static_cast struct switch template this " + 
-             "thread throw true false try typedef typeid typename union " + 
-             "using uuid virtual volatile whcar_t while";
-    this.regexList = [{
-        regex: dp.sh.RegexLib.SingleLineCysComments,
-        css: "comment"
-    },
-    {
-        regex: dp.sh.RegexLib.MultiLineCysComments,
-        css: "comment"
-    },
-    {
-        regex: dp.sh.RegexLib.DoubleQuotedString,
-        css: "string"
-    },
-    {
-        regex: new RegExp("[a-zA-Z]:|[a-zA-Z_][0-9a-zA-Z_]+:", "gm"),
-        css: "label"
-    },
-    {
-        regex: new RegExp("[-`~!@#$%^&*<>|+?=/\\\\]+", "gm"),
-        css: "operatur"
-    },
-    {
-        regex: new RegExp(this.GetKeywords(_), "gm"),
-        css: "datatypes"
-    },
-    {
-        regex: new RegExp(this.GetKeywords($), "gm"),
-        css: "keyword"
-    }];
-    this.CssClass = "dp-cys";
-    this.Style = ".dp-cys .datatypes { color: #2E8B57; font-weight: bold; }"
-};
-dp.sh.Brushes.Cys.prototype = new dp.sh.Highlighter();
-dp.sh.Brushes.Cys.Aliases = ["cys", "cystem"];
+
 //}}}
