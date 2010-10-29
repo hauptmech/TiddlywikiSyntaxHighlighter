@@ -1,4 +1,4 @@
-/**
+/***
  * Code Syntax Highlighter.
  * Version 1.5.1
  * Copyright (C) 2004-2007 Alex Gorbatchev.
@@ -14,11 +14,46 @@
  *
  * You should have received a copy of the GNU Lesser General Public License along with this library; if not, write to 
  * the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA 
- */
+ *
 
-//
-// create namespaces
-//
+
+!Metadata:
+|''Name:''|SyntaxHighlighterPlugin|
+|''Description:''|Code Syntax Highlighter Plugin for TiddlyWiki.|
+|''Version:''|1.1.3|
+|''Date:''|Oct 24, 2008|
+|''Source:''|http://www.coolcode.cn/show-310-1.html|
+|''Author:''|Ma Bingyao (andot (at) ujn (dot) edu (dot) cn)|
+|''License:''|[[GNU Lesser General Public License|http://www.gnu.org/licenses/lgpl.txt]]|
+|''~CoreVersion:''|2.4.1|
+|''Browser:''|Firefox 1.5+; InternetExplorer 6.0; Safari; Opera; Chrome; etc.|
+
+!Syntax:
+{{{
+<code options>
+codes
+</code>
+}}}
+
+!Examples:
+{{{
+<code java>
+public class HelloWorld {
+    public static void main(String args[]) {
+        System.out.println("HelloWorld!");
+    }
+}
+</code>
+}}}
+
+!Revision History:
+|''Version''|''Date''|''Note''|
+|1.1.2|Oct 15, 2008|Optimize Highlight|
+|1.0.0|Oct 13, 2008|Initial release|
+
+!Code section:
+***/
+//{{{
 var dp = {
 	sh :
 	{
@@ -2001,3 +2036,4 @@ dp.sh.Brushes.Cys = function () {
 };
 dp.sh.Brushes.Cys.prototype = new dp.sh.Highlighter();
 dp.sh.Brushes.Cys.Aliases = ["cys", "cystem"];
+//}}}
