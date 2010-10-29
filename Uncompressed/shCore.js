@@ -668,8 +668,8 @@ dp.sh.HighlightAll = function(name, showGutter /* optional */, showControls /* o
 		// hide the original element
 		element.style.display = 'none';
 
-		highlighter.noGutter = (showGutter == null) ? IsOptionSet('nogutter', options) : !showGutter;
-		highlighter.addControls = (showControls == null) ? !IsOptionSet('nocontrols', options) : showControls;
+		highlighter.noGutter = (showGutter == null) ? !IsOptionSet('gutter', options) : !showGutter;
+		highlighter.addControls = (showControls == null) ? IsOptionSet('controls', options) : showControls;
 		highlighter.collapse = (collapseAll == null) ? IsOptionSet('collapse', options) : collapseAll;
 		highlighter.showColumns = (showColumns == null) ? IsOptionSet('showcolumns', options) : showColumns;
 
