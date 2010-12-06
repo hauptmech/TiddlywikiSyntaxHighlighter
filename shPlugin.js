@@ -2047,7 +2047,7 @@ dp.sh.Brushes.PEG = function()
                     
                     
                     /* palabras reservadas */
-                    {regex: new RegExp('[=/,*+]', 'g'), css: 'keyword'}
+                    {regex: new RegExp('[=/,*+?&~]', 'g'), css: 'keyword'}
                     ];
 
     this.CssClass = 'dp-peg';
