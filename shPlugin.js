@@ -890,7 +890,7 @@ config.formatters.push({
 		}
 	}
 });
-
+/*
 config.formatterHelpers.enclosedTextHelper = function(w) {
 	this.lookaheadRegExp.lastIndex = w.matchStart;
 	var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
@@ -899,9 +899,9 @@ config.formatterHelpers.enclosedTextHelper = function(w) {
 		if(config.browser.isIE)
 			text = text.replace(/\n/g,"\r");
 		var element = createTiddlyElement(w.output,this.element,null,null,text);
-		switch(w.matchText) {
-		case "/*{{{*/\n": // CSS
-			dp.sh.Highlight(element, 'css');
+		switch(w.matchText) {*/
+	//	case "/*{{{*/\n": // CSS
+/*			dp.sh.Highlight(element, 'css');
 			break;
 		case "//{{{\n": // plugin
 			dp.sh.Highlight(element, 'js');
@@ -912,7 +912,7 @@ config.formatterHelpers.enclosedTextHelper = function(w) {
 		}
 		w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 	}
-}
+}*/
 
 /*
  * AS3 Syntax
@@ -2019,5 +2019,49 @@ dp.sh.Brushes.Xml.prototype.ProcessRegexList = function()
 		push(this.matches, new dp.sh.Match(match[1], match.index + match[0].indexOf(match[1]), 'tag-name'));
 	}
 }
+
+// PEG Grammars 
+dp.sh.Brushes.PEG = function()
+{
+    var builtins =  'alias bg bind break builtin cd command compgen complete continue ' +
+                    'declare dirs disown echo enable eval exec exit export fc fg ' +
+                    'getopts hash help history jobs kill let local logout popd printf ' +
+                    'pushd pwd read readonly return set shift shopt source ' +
+                    'suspend test times trap type typeset ulimit umask unalias unset wait';
+
+    var keywords =  'case do done elif else esac fi for function if in select then ' +
+                    'time until while';
+
+    this.regexList = [
+                    /* cometarios */
+                    {regex: dp.sh.RegexLib.SingleLinePerlComments, css: 'comment'},
+                    /* builtins */
+                    /*{regex: new RegExp('^\\w+', 'g'), css: 'builtin'},*/
+                    /* cadenas de texto */
+                    {regex: dp.sh.RegexLib.DoubleQuotedString, css: 'string'},
+                    {regex: dp.sh.RegexLib.SingleQuotedString, css: 'string'},
+                    /* delimitadores */
+                    {regex: new RegExp('[()[\\]{}]', 'g'), css: 'delim'},
+                    
+                    {regex: new RegExp('(\\w+\\s*)=', 'g'), css: 'builtin'},
+                    
+                    
+                    /* palabras reservadas */
+                    {regex: new RegExp('[=/,*+]', 'g'), css: 'keyword'}
+                    ];
+
+    this.CssClass = 'dp-peg';
+
+    this.Style =    '.dp-peg .builtin {color: maroon; font-weight: bold;}' +
+                    '.dp-peg .comment {color: gray;}' +
+                    '.dp-peg .delim {font-weight: bold;}' +
+                    '.dp-peg .flag {color: green;}' +
+                    '.dp-peg .string {color: red;}' +
+                    '.dp-peg .vars {color: blue;}';
+
+}
+
+dp.sh.Brushes.PEG.prototype = new dp.sh.Highlighter();
+dp.sh.Brushes.PEG.Aliases = ['PEG', 'peg'];
 
 //}}}
