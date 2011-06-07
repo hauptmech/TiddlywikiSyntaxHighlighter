@@ -54,6 +54,12 @@ public class HelloWorld {
 !Code section:
 ***/
 //{{{
+/*
+Note: When processing the text remember it's html and &,<,> are all 
+escaped as &amp; etc.
+
+*/
+
 var dp = {
 	sh :
 	{
@@ -227,8 +233,8 @@ dp.sh.Utils.FixForBlogger = function(str)
 // Common reusable regular expressions
 //
 dp.sh.RegexLib = {
-  MultiLineCysComments:new RegExp("_\\*[\\s\\S]*?\\*_","gm"),
-  SingleLineCysComments:new RegExp("_\\s.*$","gm"),
+	MultiLineCysComments:new RegExp("_\\*[\\s\\S]*?\\*_","gm"),
+	SingleLineCysComments:new RegExp("_\\s.*$","gm"),
 	MultiLineCComments : new RegExp('/\\*[\\s\\S]*?\\*/', 'gm'),
 	SingleLineCComments : new RegExp('//.*$', 'gm'),
 	SingleLinePerlComments : new RegExp('#.*$', 'gm'),
@@ -302,13 +308,13 @@ dp.sh.Highlighter.prototype.AddBit = function(str, css)
 		return;
 
 	var span = this.CreateElement('SPAN');
-	
-//	str = str.replace(/&/g, '&amp;');
-//	str = str.replace(/ /g, '&nbsp;')
- // str = str.replace(/</g, '&lt;');
-//	str = str.replace(/>/g, '&gt;');
-//	str = str.replace(/\n/gm, '&nbsp;<br>');
-
+/*	
+	str = str.replace(/&/g, '&amp;');
+	str = str.replace(/ /g, '&nbsp;')
+	str = str.replace(/</g, '&lt;');
+	str = str.replace(/>/g, '&gt;');
+	str = str.replace(/\n/gm, '&nbsp;<br>');
+*/
 	// when adding a piece of code, check to see if it has line breaks in it 
 	// and if it does, wrap individual line breaks with span tags
 	if(css != null)
@@ -552,6 +558,7 @@ dp.sh.Highlighter.prototype.Highlight = function(code)
 	this.ProcessRegexList();	
 
 	// if no matches found, add entire code as plain text
+	/*
 	if(this.matches.length == 0)
 	{
 		this.AddBit(this.code, null);
@@ -559,7 +566,7 @@ dp.sh.Highlighter.prototype.Highlight = function(code)
 		this.div.appendChild(this.bar);
 		this.div.appendChild(this.ol);
 		return;
-	}
+	} */
 
 	// sort the matches
 	this.matches = this.matches.sort(dp.sh.Highlighter.SortCallback);
@@ -1362,12 +1369,14 @@ dp.sh.Brushes.Cys = function () {
     {regex: new RegExp("[a-zA-Z]:|[a-zA-Z_][0-9a-zA-Z_]+:", "gm"),    css: "label"    },
     {regex: new RegExp("[-`~!@#$%^*|+?=/\\\\]+", "gm"),   css: "operatur"    },
     {regex: new RegExp(this.GetKeywords(datatypes), "gm"),   css: "datatypes"    },
-    {regex: new RegExp(this.GetKeywords(keywords), "gm"),    css: "keyword"    }];
+    {regex: new RegExp(this.GetKeywords(keywords), "gm"),    css: "keyword"    }
+    ];
     this.CssClass = "dp-cys";
     this.Style = ".dp-cys .datatypes { color: #2E8B57; font-weight: bold; }"
-};
+}
 dp.sh.Brushes.Cys.prototype = new dp.sh.Highlighter();
 dp.sh.Brushes.Cys.Aliases = ["cys", "cystem"];
+
 
 dp.sh.Brushes.CSharp = function()
 {
@@ -2020,47 +2029,25 @@ dp.sh.Brushes.Xml.prototype.ProcessRegexList = function()
 }
 
 // PEG Grammars 
-dp.sh.Brushes.PEG = function()
-{
-    var builtins =  'alias bg bind break builtin cd command compgen complete continue ' +
-                    'declare dirs disown echo enable eval exec exit export fc fg ' +
-                    'getopts hash help history jobs kill let local logout popd printf ' +
-                    'pushd pwd read readonly return set shift shopt source ' +
-                    'suspend test times trap type typeset ulimit umask unalias unset wait';
-
-    var keywords =  'case do done elif else esac fi for function if in select then ' +
-                    'time until while';
-
+dp.sh.Brushes.Peg = function () {
+                    
     this.regexList = [
-                    /* cometarios */
-                    {regex: dp.sh.RegexLib.SingleLinePerlComments, css: 'comment'},
-                    /* builtins */
-                    /*{regex: new RegExp('^\\w+', 'g'), css: 'builtin'},*/
-                    /* cadenas de texto */
-                    {regex: dp.sh.RegexLib.DoubleQuotedString, css: 'string'},
-                    {regex: dp.sh.RegexLib.SingleQuotedString, css: 'string'},
-                    /* delimitadores */
-                    {regex: new RegExp('[()[\\]{}]', 'g'), css: 'delim'},
-                    
-                    {regex: new RegExp('(\\w+\\s*)=', 'g'), css: 'builtin'},
-                    
-                    
-                    /* palabras reservadas */
-                    {regex: new RegExp('[=/,*+?&~]', 'g'), css: 'keyword'}
-                    ];
-
-    this.CssClass = 'dp-peg';
-
-    this.Style =    '.dp-peg .builtin {color: maroon; font-weight: bold;}' +
-                    '.dp-peg .comment {color: gray;}' +
+    {regex: dp.sh.RegexLib.SingleLinePerlComments, css: "comment"},
+    {regex: dp.sh.RegexLib.DoubleQuotedString,    css: "string"    },
+    {regex: dp.sh.RegexLib.SingleQuotedString, css: "string"},
+    {regex: /[()[\]{}]/g , css: "delim"},
+    {regex: /^(\w+\s*=)|(\w+\s*&lt;-)/gm , css: "builtin"},
+    {regex: /^(\s*)\//gm , css: "builtin"},
+    {regex: /[=\/,*+!?~]|(&amp;)/g , css: "keyword"}
+    //{regex: /[=\/,*+!?~]|[^;](&amp;)[^&]/g , css: "keyword"}
+    ];
+    this.CssClass = "dp-peg";
+    this.Style = ".dp-peg .comment {color: gray;}" +
+					'.dp-peg .builtin {color: maroon; font-weight: bold;}' +
                     '.dp-peg .delim {font-weight: bold;}' +
-                    '.dp-peg .flag {color: green;}' +
-                    '.dp-peg .string {color: red;}' +
-                    '.dp-peg .vars {color: blue;}';
-
+                    ".dp-peg .string {color: red;}" ;
 }
-
-dp.sh.Brushes.PEG.prototype = new dp.sh.Highlighter();
-dp.sh.Brushes.PEG.Aliases = ['PEG', 'peg'];
+dp.sh.Brushes.Peg.prototype = new dp.sh.Highlighter();
+dp.sh.Brushes.Peg.Aliases = ["PEG", "peg"];
 
 //}}}
