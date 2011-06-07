@@ -238,8 +238,8 @@ dp.sh.RegexLib = {
 	MultiLineCComments : new RegExp('/\\*[\\s\\S]*?\\*/', 'gm'),
 	SingleLineCComments : new RegExp('//.*$', 'gm'),
 	SingleLinePerlComments : new RegExp('#.*$', 'gm'),
-	DoubleQuotedString : new RegExp('"(?:\\.|(\\\\\\")|[^\\""\\n])*"','g'),
-	SingleQuotedString : new RegExp("'(?:\\.|(\\\\\\')|[^\\''\\n])*'", 'g')
+	DoubleQuotedString : /"(?:\.|(\\\")|[^\""\n])*"/g,
+	SingleQuotedString : /'(?:\.|(\\\')|[^\''\n])*'/g
 };
 
 //
@@ -309,10 +309,10 @@ dp.sh.Highlighter.prototype.AddBit = function(str, css)
 
 	var span = this.CreateElement('SPAN');
 	
-/*	str = str.replace(/&/g, '&amp;');
+//	str = str.replace(/&/g, '&amp;');
 	str = str.replace(/ /g, '&nbsp;')
-	str = str.replace(/</g, '&lt;');
-	str = str.replace(/>/g, '&gt;');*/
+//	str = str.replace(/</g, '&lt;');
+//	str = str.replace(/>/g, '&gt;');
 	str = str.replace(/\n/gm, '&nbsp;<br>');
 
 	// when adding a piece of code, check to see if it has line breaks in it 
@@ -493,7 +493,7 @@ dp.sh.Highlighter.prototype.Highlight = function(code)
 	{
 		var lines = dp.sh.Utils.FixForBlogger(str).split('\n');
 		var indents = new Array();
-		var regex = new RegExp('^\\s*', 'g');
+		var regex = /^\s*/g; //new RegExp('^\\s*', 'g');
 		var min = 1000;
 
 		// go through every line and check for common number of indents
@@ -1368,7 +1368,9 @@ dp.sh.Brushes.Cys = function () {
     {regex: dp.sh.RegexLib.MultiLineCysComments,   css: "comment"    },
     {regex: dp.sh.RegexLib.DoubleQuotedString,    css: "string"    },
     {regex: new RegExp("[a-zA-Z]:|[a-zA-Z_][0-9a-zA-Z_]+:", "gm"),    css: "label"    },
-    {regex: new RegExp("[^_][-`~!@#$%^*|+?=/\\\\]+[^_]", "gm"),   css: "operatur"    },
+    {regex: /[-`~!@#$%^*|+?=\/\\]+/gm,   css: "operatur"    },    
+    
+//    {regex: new RegExp("[^_][-`~!@#$%^*|+?=/\\\\]+[^_]", "gm"),   css: "operatur"    },
     {regex: new RegExp(this.GetKeywords(datatypes), "gm"),   css: "datatypes"    },
     {regex: new RegExp(this.GetKeywords(keywords), "gm"),    css: "keyword"    }
     ];
