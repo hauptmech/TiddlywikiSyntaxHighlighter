@@ -233,8 +233,8 @@ dp.sh.Utils.FixForBlogger = function(str)
 // Common reusable regular expressions
 //
 dp.sh.RegexLib = {
-	MultiLineCysComments:new RegExp("_\\*[\\s\\S]*?\\*_","gm"),
-	SingleLineCysComments:new RegExp("_\\s.*$","gm"),
+	MultiLineCysComments: /_\*[\s\S]*?\*_/gm,
+	SingleLineCysComments: /\s_\s.*$/gm,
 	MultiLineCComments : new RegExp('/\\*[\\s\\S]*?\\*/', 'gm'),
 	SingleLineCComments : new RegExp('//.*$', 'gm'),
 	SingleLinePerlComments : new RegExp('#.*$', 'gm'),
@@ -308,13 +308,13 @@ dp.sh.Highlighter.prototype.AddBit = function(str, css)
 		return;
 
 	var span = this.CreateElement('SPAN');
-/*	
-	str = str.replace(/&/g, '&amp;');
+	
+/*	str = str.replace(/&/g, '&amp;');
 	str = str.replace(/ /g, '&nbsp;')
 	str = str.replace(/</g, '&lt;');
-	str = str.replace(/>/g, '&gt;');
+	str = str.replace(/>/g, '&gt;');*/
 	str = str.replace(/\n/gm, '&nbsp;<br>');
-*/
+
 	// when adding a piece of code, check to see if it has line breaks in it 
 	// and if it does, wrap individual line breaks with span tags
 	if(css != null)
@@ -558,7 +558,7 @@ dp.sh.Highlighter.prototype.Highlight = function(code)
 	this.ProcessRegexList();	
 
 	// if no matches found, add entire code as plain text
-	/*
+	
 	if(this.matches.length == 0)
 	{
 		this.AddBit(this.code, null);
@@ -566,7 +566,7 @@ dp.sh.Highlighter.prototype.Highlight = function(code)
 		this.div.appendChild(this.bar);
 		this.div.appendChild(this.ol);
 		return;
-	} */
+	} 
 
 	// sort the matches
 	this.matches = this.matches.sort(dp.sh.Highlighter.SortCallback);
@@ -896,7 +896,7 @@ config.formatters.push({
 		}
 	}
 });
-/*
+
 config.formatterHelpers.enclosedTextHelper = function(w) {
 	this.lookaheadRegExp.lastIndex = w.matchStart;
 	var lookaheadMatch = this.lookaheadRegExp.exec(w.source);
@@ -905,9 +905,10 @@ config.formatterHelpers.enclosedTextHelper = function(w) {
 		if(config.browser.isIE)
 			text = text.replace(/\n/g,"\r");
 		var element = createTiddlyElement(w.output,this.element,null,null,text);
-		switch(w.matchText) {*/
-	//	case "/*{{{*/\n": // CSS
-/*			dp.sh.Highlight(element, 'css');
+		
+		//switch(w.matchText) {
+		//case "/*{{{*/\n": // CSS
+		/*	dp.sh.Highlight(element, 'css');
 			break;
 		case "//{{{\n": // plugin
 			dp.sh.Highlight(element, 'js');
@@ -915,10 +916,10 @@ config.formatterHelpers.enclosedTextHelper = function(w) {
 		case "<!--{{{-->\n": //template
 			dp.sh.Highlight(element, 'xml');
 			break;
-		}
+		}*/
 		w.nextMatch = lookaheadMatch.index + lookaheadMatch[0].length;
 	}
-}*/
+}
 
 /*
  * AS3 Syntax
@@ -1367,7 +1368,7 @@ dp.sh.Brushes.Cys = function () {
     {regex: dp.sh.RegexLib.MultiLineCysComments,   css: "comment"    },
     {regex: dp.sh.RegexLib.DoubleQuotedString,    css: "string"    },
     {regex: new RegExp("[a-zA-Z]:|[a-zA-Z_][0-9a-zA-Z_]+:", "gm"),    css: "label"    },
-    {regex: new RegExp("[-`~!@#$%^*|+?=/\\\\]+", "gm"),   css: "operatur"    },
+    {regex: new RegExp("[^_][-`~!@#$%^*|+?=/\\\\]+[^_]", "gm"),   css: "operatur"    },
     {regex: new RegExp(this.GetKeywords(datatypes), "gm"),   css: "datatypes"    },
     {regex: new RegExp(this.GetKeywords(keywords), "gm"),    css: "keyword"    }
     ];
