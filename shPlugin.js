@@ -362,9 +362,9 @@ dp.sh.Highlighter.prototype.IsInside = function(match)
 		
 		if(c == null)
 			continue;
-
-		if((match.index > c.index) && (match.index < c.index + c.length))
-			return true;
+        if (match != c)
+    		if((match.index >= c.index) && ((match.index + match.length) <= (c.index + c.length)))
+	    		return true;
 	}
 	
 	return false;
@@ -1353,16 +1353,16 @@ dp.sh.Brushes.Cpp.prototype	= new dp.sh.Highlighter();
 dp.sh.Brushes.Cpp.Aliases	= ['cpp', 'c', 'c++'];
 
 dp.sh.Brushes.Cys = function () {
-    var datatypes = "int double void",
-        keywords = "break case catch class const __finally __exception __try " + 
-             "const_cast continue private public protected __declspec " + 
-             "default delete deprecated dllexport dllimport do dynamic_cast " + 
-             "else enum explicit extern if for friend goto inline " + 
-             "mutable naked namespace new noinline noreturn nothrow " + 
-             "register reinterpret_cast return selectany " + 
-             "sizeof static static_cast struct switch template this " + 
-             "thread throw true false try typedef typeid typename union " + 
-             "using uuid virtual volatile whcar_t while";
+    var datatypes = "int int32 int64 fp32 fp64 fp80 double void symbol opaque",
+        keywords = "atomic break case catch " + 
+             "continue " + 
+             "delete do " + 
+             "else enum extern if for goto inline " + 
+             "new " + 
+             "register return " + 
+             "sizeof typeof offsetof alloca static switch this " + 
+             "thread throw true false try union " + 
+             "using virtual while";
     this.regexList = [
     {regex: dp.sh.RegexLib.SingleLineCysComments,   css: "comment"    },
     {regex: dp.sh.RegexLib.MultiLineCysComments,   css: "comment"    },
