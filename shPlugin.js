@@ -1,6 +1,6 @@
 /***
- * Code Syntax Highlighter.
- * Version 1.5.1
+ * Code Syntax Highlighter Derivative.
+ * Version 1.5.2
  * Copyright (C) 2004-2007 Alex Gorbatchev.
  * http://www.dreamprojections.com/syntaxhighlighter/
  * 
@@ -20,13 +20,12 @@
 !Metadata:
 |''Name:''|SyntaxHighlighterPlugin|
 |''Description:''|Code Syntax Highlighter Plugin for TiddlyWiki.|
-|''Version:''|1.1.3|
+|''Version:''|1.5.2|
 |''Date:''|Oct 24, 2008|
-|''Source:''|http://www.coolcode.cn/show-310-1.html|
-|''Author:''|Ma Bingyao (andot (at) ujn (dot) edu (dot) cn)|
+|''Source:''|git://github.com/hauptmech/TiddlywikiSyntaxHighlighter.git|
+|''Author:''|Various|
 |''License:''|[[GNU Lesser General Public License|http://www.gnu.org/licenses/lgpl.txt]]|
-|''~CoreVersion:''|2.4.1|
-|''Browser:''|Firefox 1.5+; InternetExplorer 6.0; Safari; Opera; Chrome; etc.|
+|''~CoreVersion:''|2.6.2|
 
 !Syntax:
 {{{
@@ -48,6 +47,7 @@ public class HelloWorld {
 
 !Revision History:
 |''Version''|''Date''|''Note''|
+|1.5.2|Jun 14, 2011|Add cys & peg syntaxes, improve keyword matching|
 |1.1.2|Oct 15, 2008|Optimize Highlight|
 |1.0.0|Oct 13, 2008|Initial release|
 
